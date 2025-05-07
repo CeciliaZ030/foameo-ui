@@ -7,7 +7,7 @@ interface Message {
   id: number;
   content: string;
   sender: 'user' | 'bot';
-  timestamp: Date;
+  timestamp: number;
   status?: 'sending' | 'sent' | 'error';
 }
 
@@ -17,7 +17,7 @@ export default function ChatPage() {
       id: 1,
       content: "Hello! I'm your AI assistant. How can I help you today?",
       sender: 'bot',
-      timestamp: new Date(),
+      timestamp: Date.now(),
       status: 'sent'
     },
   ]);
@@ -31,7 +31,7 @@ export default function ChatPage() {
       id: messages.length + 1,
       content: input,
       sender: 'user',
-      timestamp: new Date(),
+      timestamp: Date.now(),
       status: 'sending'
     };
     
@@ -55,7 +55,7 @@ export default function ChatPage() {
           id: messages.length + 2,
           content: "I'm processing your request...",
           sender: 'bot',
-          timestamp: new Date(),
+          timestamp: Date.now(),
           status: 'sent'
         };
         setMessages(prev => [...prev, botMessage]);
