@@ -41,6 +41,29 @@ export default function Navigation() {
             </Link>
           );
         })}
+        <Link
+          href="/profile"
+          className="relative flex-1 flex flex-col items-center py-2"
+        >
+          {pathname === '/profile' && (
+            <motion.div
+              layoutId="nav-indicator"
+              className="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500"
+              initial={false}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            />
+          )}
+          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs">
+            U
+          </div>
+          <span
+            className={`text-sm ${
+              pathname === '/profile' ? 'text-blue-500' : 'text-gray-500'
+            }`}
+          >
+            Profile
+          </span>
+        </Link>
       </div>
     </nav>
   );

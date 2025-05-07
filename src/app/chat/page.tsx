@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
   id: number;
   content: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  status?: 'sending' | 'sent' | 'error';
 }
 
 export default function ChatPage() {
@@ -17,22 +18,50 @@ export default function ChatPage() {
       content: "Hello! I'm your AI assistant. How can I help you today?",
       sender: 'bot',
       timestamp: new Date(),
+      status: 'sent'
     },
   ]);
   const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
     
-    const newMessage: Message = {
+    const userMessage: Message = {
       id: messages.length + 1,
       content: input,
       sender: 'user',
       timestamp: new Date(),
+      status: 'sending'
     };
     
-    setMessages([...messages, newMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
+    
+    // Simulate message sending
+    setTimeout(() => {
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === userMessage.id 
+            ? { ...msg, status: 'sent' }
+            : msg
+        )
+      );
+      
+      // Simulate bot typing
+      setIsTyping(true);
+      setTimeout(() => {
+        const botMessage: Message = {
+          id: messages.length + 2,
+          content: "I'm processing your request...",
+          sender: 'bot',
+          timestamp: new Date(),
+          status: 'sent'
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }, 1500);
+    }, 1000);
   };
 
   return (
@@ -44,24 +73,47 @@ export default function ChatPage() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
+        <AnimatePresence>
+          {messages.map((message) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div
+                className={`max-w-[70%] rounded-2xl px-4 py-2 relative ${
+                  message.sender === 'user'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
+              >
+                {message.content}
+                {message.status === 'sending' && (
+                  <div className="absolute -bottom-4 right-0 text-xs text-gray-400">
+                    Sending...
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+        
+        {/* Typing Indicator */}
+        {isTyping && (
           <motion.div
-            key={message.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            className="flex justify-start"
           >
-            <div
-              className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                message.sender === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              {message.content}
+            <div className="bg-gray-100 rounded-2xl px-4 py-2 flex space-x-1">
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </motion.div>
-        ))}
+        )}
       </div>
 
       {/* Input */}
@@ -77,7 +129,12 @@ export default function ChatPage() {
           />
           <button
             onClick={handleSend}
-            className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+            disabled={!input.trim()}
+            className={`px-6 py-2 rounded-full transition-colors ${
+              input.trim()
+                ? 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}
           >
             Send
           </button>
