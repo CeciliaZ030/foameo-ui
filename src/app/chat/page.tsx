@@ -65,7 +65,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-to-b from-gray-50 to-white">
       {/* Header */}
       <header className="p-4 border-b border-gray-100 bg-white/80 backdrop-blur-sm">
         <h1 className="text-xl font-semibold text-gray-800">Chat</h1>
@@ -117,7 +117,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-100 bg-white">
+      <div className="sticky bottom-0 p-4 border-t border-gray-100 bg-white">
         <div className="flex gap-2">
           <input
             type="text"
