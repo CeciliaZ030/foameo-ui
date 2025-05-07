@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foammeo UI Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        .page {
+            flex: 0 0 375px;
+            height: 812px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .page-title {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page">
+            <iframe src="/chat" style="width: 100%; height: 100%; border: none;"></iframe>
+            <div class="page-title">Chat Page</div>
+        </div>
+        <div class="page">
+            <iframe src="/explore" style="width: 100%; height: 100%; border: none;"></iframe>
+            <div class="page-title">Explore Page</div>
+        </div>
+    </div>
+</body>
+</html> 
