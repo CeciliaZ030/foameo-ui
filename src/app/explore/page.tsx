@@ -46,7 +46,7 @@ const bots: Bot[] = [
   }
 ];
 
-const categories = ["All", "Writing", "Development", "Education", "Language"];
+const categories = ["All", "DEX", "Staking", "Games", "NFTs", "Lending", "Prediction Markets"];
 
 export default function ExplorePage() {
   return (
@@ -110,7 +110,7 @@ export default function ExplorePage() {
 
       {/* Bot Grid */}
       <section className="px-4 py-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Popular Bots</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Popular Apps</h2>
         <div className="grid grid-cols-2 gap-4">
           {bots.map((bot) => (
             <motion.div
