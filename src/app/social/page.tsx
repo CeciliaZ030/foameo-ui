@@ -82,7 +82,7 @@ const FoameoSocialPage = () => {
           </div>
           
           <div className="mb-3">
-            Just launched $FROG 🐸 - the memecoin that's actually ribbiting! First 100 buyers get bonus NFTs. Already hit $50k market cap in 20 mins!
+            Just launched $FROG 🐸 - the memecoin that&apos;s actually ribbiting! First 100 buyers get bonus NFTs. Already hit $50k market cap in 20 mins!
           </div>
           
           <div className="mb-3 p-3 bg-gray-50 rounded-lg border">
@@ -189,7 +189,7 @@ const FoameoSocialPage = () => {
           </div>
           
           <div className="mb-3">
-            Just dropped my new NFT collection "Crypto Dreams" on Zora! Limited edition of 100 pieces. Mint directly here! 👇
+            Just dropped my new NFT collection &quot;Crypto Dreams&quot; on Zora! Limited edition of 100 pieces. Mint directly here! 👇
           </div>
           
           <div className="mb-3 rounded-lg overflow-hidden bg-gray-100 aspect-video flex items-center justify-center">
@@ -227,7 +227,7 @@ const FoameoSocialPage = () => {
           </div>
           
           <div className="mb-3">
-            $PEPE just crossed $150M market cap! If you bought last week when I called it, you're up 4x. This is only the beginning. Watch this space 👀
+            $PEPE just crossed $150M market cap! If you bought last week when I called it, you&apos;re up 4x. This is only the beginning. Watch this space 👀
           </div>
           
           <div className="mb-3 p-3 bg-gray-50 rounded-lg border">
