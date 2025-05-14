@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, MessageCircle, Repeat, ExternalLink, Wallet, Star, DollarSign, BarChart2, TrendingUp, Share2, User, Camera, Search, Bell } from 'lucide-react';
+import { Heart, MessageCircle, Repeat, ExternalLink, Wallet, BarChart2, TrendingUp, Share2, User, Camera, Search, Bell } from 'lucide-react';
 
 const FoameoSocialPage = () => {
   return (

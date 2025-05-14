@@ -42,15 +42,6 @@ const SUGGESTIONS = [
   },
 ];
 
-const Logo = () => (
-  <div className="flex flex-col items-center justify-center h-full">
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M24 4C13.0589 4 4 13.0589 4 24C4 34.9411 13.0589 44 24 44C34.9411 44 44 34.9411 44 24C44 13.0589 34.9411 4 24 4Z" fill="#E5E7EB"/>
-      <path d="M24 14V24L32 28" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  </div>
-);
-
 export default function ChatPage() {
   const [chats, setChats] = useState<Chat[]>([
     {
