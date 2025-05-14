@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaPen, FaPaperPlane } from 'react-icons/fa';
+import { FaBars, FaBell, FaWallet, FaPaperPlane } from 'react-icons/fa';
 
 interface Message {
   id: number;
@@ -162,17 +162,34 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] bg-white rounded-3xl shadow-xl overflow-hidden">
-      {/* Top Bar */}
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white/80">
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 text-gray-700">
-          <FaBars size={20} />
+          <FaBars size={22} />
         </button>
-        <button className="px-4 py-1 rounded-xl bg-indigo-50 text-indigo-600 font-medium text-sm flex items-center gap-1">
-          Get Plus <span className="text-indigo-400">+</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+            <FaWallet className="text-blue-500" size={22} />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="font-semibold text-gray-900 leading-tight">My Wallet</span>
+            <span className="text-xs text-gray-500">$2,480.25 • 0.78 ETH</span>
+          </div>
+        </div>
         <button className="p-2 text-gray-400">
-          <FaPen size={18} />
+          <FaBell size={20} />
         </button>
+      </div>
+      {/* Tab Bar */}
+      <div className="flex gap-2 px-4 py-2 border-b bg-white">
+        {['General', 'Uniswap', 'Lido'].map((tab, i) => (
+          <button
+            key={tab}
+            className={`px-4 py-1 rounded-full text-sm font-medium transition-all ${i === 0 ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
       <div className="flex-1 flex h-full overflow-x-hidden">
         {/* Sidebar */}
@@ -221,24 +238,13 @@ export default function ChatPage() {
         >
           {/* If no messages except initial, show logo and suggestions */}
           {currentChat && currentChat.messages.length <= 1 ? (
-            <div className="flex-1 flex flex-col items-center justify-center relative overflow-x-hidden">
-              <div className="flex flex-col items-center justify-center flex-1">
-                <Logo />
-              </div>
-              <div className="flex flex-row gap-3 px-4 mb-8 w-full overflow-x-auto flex-nowrap scrollbar-hide">
-                {SUGGESTIONS.map((s, i) => (
-                  <button key={i} className="w-56 rounded-2xl bg-gray-50 px-4 py-3 shadow-sm hover:bg-gray-100 transition-all text-left">
-                    <div className="font-semibold text-gray-900 text-sm">{s.title}</div>
-                    <div className="text-xs text-gray-500 mt-1">{s.description}</div>
-                  </button>
-                ))}
-              </div>
+            <div className="flex-1 flex flex-col items-center justify-center relative overflow-x-hidden w-full max-w-full">
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto">
               <div className="max-w-3xl mx-auto p-4 space-y-6">
                 <AnimatePresence>
-                  {currentChat?.messages.map((message) => (
+                  {currentChat?.messages.map((message, idx) => (
                     <motion.div
                       key={message.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -254,16 +260,35 @@ export default function ChatPage() {
                         {message.sender === 'user' ? 'U' : 'AI'}
                       </div>
                       <div className="flex-1">
-                        <div className={`rounded-lg px-4 py-2 ${
+                        <div className={`rounded-2xl px-4 py-2 text-sm ${
                           message.sender === 'user'
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-blue-500 text-white text-right'
+                            : 'bg-white text-gray-900 border border-gray-100 shadow-sm'
                         }`}>
                           {message.content}
                         </div>
                         {message.status === 'sending' && (
                           <div className="text-xs text-gray-400 mt-1">
                             Sending...
+                          </div>
+                        )}
+                        {/* Transaction Card after first bot message */}
+                        {message.sender === 'bot' && idx === 0 && (
+                          <div className="mt-4 bg-white rounded-2xl shadow-md border border-gray-100 p-4">
+                            <div className="font-semibold text-gray-900 mb-2">Swap Transaction</div>
+                            <div className="flex justify-between text-sm mb-1">
+                              <span className="text-gray-500">From</span>
+                              <span className="font-medium">0.1 ETH</span>
+                            </div>
+                            <div className="flex justify-between text-sm mb-1">
+                              <span className="text-gray-500">To (estimated)</span>
+                              <span className="font-medium">210 USDC</span>
+                            </div>
+                            <div className="text-xs text-gray-400 mb-3">Via Uniswap V3 • 0.05% fee • Max slippage 0.5%</div>
+                            <div className="flex gap-2 justify-end">
+                              <button className="px-4 py-1 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 text-sm">Edit</button>
+                              <button className="px-4 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 text-sm">Approve</button>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -291,17 +316,29 @@ export default function ChatPage() {
               </div>
             </div>
           )}
-          {/* Input */}
+          {/* Suggestion Bar at Bottom (only in empty state) */}
+          {currentChat && currentChat.messages.length <= 1 && (
+            <div className="w-full max-w-full box-border pt-2 pb-4">
+              <div className="flex flex-row gap-3 w-full max-w-full overflow-x-auto flex-nowrap scrollbar-hide box-border">
+                {SUGGESTIONS.map((s, i) => (
+                  <button key={i} className="w-56 rounded-2xl bg-gray-50 px-4 py-3 shadow-sm hover:bg-gray-100 transition-all text-left">
+                    <div className="font-semibold text-gray-900 text-sm">{s.title}</div>
+                    <div className="text-xs text-gray-500 mt-1">{s.description}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="border-t border-gray-100 p-4 bg-white">
-            <div className="max-w-3xl mx-auto">
-              <div className="relative flex items-center">
+            <div className="w-full max-w-3xl mx-auto">
+              <div className="relative flex items-center w-full max-w-full">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Message"
-                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 bg-gray-50"
+                  placeholder="Send a message..."
+                  className="w-full max-w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 bg-gray-50 shadow-sm"
                 />
                 <button
                   onClick={handleSend}
